@@ -14,7 +14,7 @@ The library gives up some features to keep things simple. The following example 
 
 ```cs
 using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
-builder.SetCell("A1", "Hello, World!);
+builder.SetCell("A1", "Hello, World!");
 builder.Save();
 ```
 ## Getting Started
@@ -40,7 +40,7 @@ using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
 To set the value of a cell, use the `SetCell()` method.
 
 ```cs
-builder.SetCell("A1", "Hello, World!);
+builder.SetCell("A1", "Hello, World!");
 ```
 
 This method has dozens of overloads. You can pass a string, as shown in the example above, or you can pass other data types such as integers, doubles and decimals.
