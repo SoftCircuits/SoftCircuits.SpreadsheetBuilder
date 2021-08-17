@@ -117,7 +117,7 @@ builder.SetCell("D22", "Header", header);
 
 In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also has `NumberFormats`, `FontStyles`, `FillStyles` and `BorderStyles` properties that provide standard styles and the ability to add new ones similar to the `CellStyles` property.
 
-*Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Ensure you don't create the same styles more than once for the same instance.*
+*Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Care should be taken to ensure you don't create the same style more than once for the same instance of `SpreadsheetBuilder`.*
 
 ## Tables
 
