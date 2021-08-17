@@ -135,14 +135,14 @@ If you specify the number of columns, it is assumed the table has no headers.
 To write data to the table, call the `AddRow()` method. This method accepts any number of arguments, each of which is assigned to the corresponding cell on the current table row. The type of the arguments can be `string`, `int`, `double`, etc. They can also be an instance of `CellValue<T>`, which can specify a style ID in addition to a value. In addition, they can also be an instance of `CellFormula`.
 
 ```cs
-string[] columns = new string[]
+string[] headers = new string[]
 {
   "Column1",
   "Column2",
   "Column3"
 };
 
-TableBuilder table = new(builder, "A4", columns);
+TableBuilder table = new(builder, "A4", headers);
 table.AddRow("Abc", 123, (decimal)123.45);
 table.AddRow("Def", 456, (decimal)4000);
 ```
