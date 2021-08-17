@@ -163,6 +163,7 @@ Use the following method to set the width of a column.
 
 ```cs
 public void SetColumnWidth(uint index, double width);
+```
 
 `index` is the 1-based index of the column to set. `width` is the new column width measured as the number of characters of the maximum digit width of the numbers 0, 1, 2, ..., 9 as rendered in the normal style's font. There are 4 pixels of margin padding (two on each side), plus 1 pixel padding for the gridlines.
 
