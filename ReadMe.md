@@ -8,13 +8,15 @@ Install-Package SoftCircuits.SpreadsheetBuilder
 
 ## Overview
 
-SpreadsheetBuilder is a lightweight class that makes it easy to create Microsoft Excel spreadsheet files (XLSX) without Excel.
+SpreadsheetBuilder is a lightweight class that makes it easy to create Microsoft Excel spreadsheet (XLSX) files without Excel.
 
-The library gives up some features to keep things simple. The following example creates a new Excel spreadsheet file, sets a value at cell *A1*, and then saves the file.
+The library forgoes some features in order to keep things simple. But should be sufficient for most requirements for building an Excel spreadsheet.
+
+The following example creates a new Excel spreadsheet file, sets a value at cell *A1*, and then saves the file.
 
 ```cs
 using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
-builder.SetCell("A1", "Hello, World!);
+builder.SetCell("A1", "Hello, World!");
 builder.Save();
 ```
 ## Getting Started
@@ -35,12 +37,14 @@ The `SpreadsheetBuilder` class implements `IDisposable`, so you should use a `us
 using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
 ```
 
+Once you've constructed the document, you can save it to disk by calling the `Save()` or `SaveAs()` method.
+
 ## Setting Cell Values
 
 To set the value of a cell, use the `SetCell()` method.
 
 ```cs
-builder.SetCell("A1", "Hello, World!);
+builder.SetCell("A1", "Hello, World!");
 ```
 
 This method has dozens of overloads. You can pass a string, as shown in the example above, or you can pass other data types such as integers, doubles and decimals.
@@ -115,7 +119,7 @@ builder.SetCell("D22", "Header", header);
 
 In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also has `NumberFormats`, `FontStyles`, `FillStyles` and `BorderStyles` properties that provide standard styles and the ability to add new ones similar to the `CellStyles` property.
 
-*Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Ensure you don't create the same styles more than once for the same instance.*
+*Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Care should be taken to ensure you don't create the same style more than once for the same instance of `SpreadsheetBuilder`.*
 
 ## Tables
 
@@ -133,16 +137,16 @@ If you specify the number of columns, it is assumed the table has no headers.
 To write data to the table, call the `AddRow()` method. This method accepts any number of arguments, each of which is assigned to the corresponding cell on the current table row. The type of the arguments can be `string`, `int`, `double`, etc. They can also be an instance of `CellValue<T>`, which can specify a style ID in addition to a value. In addition, they can also be an instance of `CellFormula`.
 
 ```cs
-string[] columns = new string[]
+string[] headers = new string[]
 {
   "Column1",
   "Column2",
   "Column3"
 };
 
-TableBuilder table = new(builder, "A4", columns);
-table.AddRow(new CellValue<string>("Abc", 123, 123.45);
-table.AddRow(new CellValue<string>("Def", 456, (decimal)4000);
+TableBuilder table = new(builder, "A4", headers);
+table.AddRow("Abc", 123, 123.45m);
+table.AddRow("Def", 456, )4000m);
 ```
 
 The `TableBuilder` class has a number of property for returning things like the range of the table so far.
@@ -153,6 +157,51 @@ Once you've finished building the tabular data, you can create an Excel table an
 table.BuilderTable("MyTableName", ExcelTableStyle.MediumBlue6);
 ```
 
-## Saving
+## Column Widths
 
-Once you've created the Excel file, you can save it to disk by calling the `Save()` or `SaveAs()` method.
+Use the following method to set the width of a column.
+
+```cs
+public void SetColumnWidth(uint index, double width);
+```
+
+`index` is the 1-based index of the column to set. `width` is the new column width measured as the number of characters of the maximum digit width of the numbers 0, 1, 2, ..., 9 as rendered in the normal style's font. There are 4 pixels of margin padding (two on each side), plus 1 pixel padding for the gridlines.
+
+Use the following method to set the width of a range of columns.
+
+```cs
+public void SetColumnWidth(uint startIndex, uint endIndex, double width)
+```
+
+## Worksheets
+
+When creating a new spreadsheet, the library will automatically create a worksheet called *Sheet1*.
+
+The `Worksheet` property is set to the active worksheet, if any. Set this property to change the active worksheet.
+
+In addition, the following methods are provided.
+
+```cs
+public Worksheet? GetFirstWorksheet()
+```
+
+This method returns the first worksheet, or null if there are no worksheets.
+
+```cs
+public Worksheet? GetWorksheet(string name)
+```
+
+This method returns the worksheet with the specified name.
+
+```cs
+public Worksheet CreateWorksheet(string name)
+```
+
+Creates a new worksheet and gives it the specified name.
+
+```cs
+public void RenameWorksheet(Worksheet worksheet, string name)
+```
+
+Renames the given worksheet with the specified name.
+
