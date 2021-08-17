@@ -55,12 +55,67 @@ The first argument specifies the cell address. You can pass the address as a str
 builder.SetCell(new CellReference(2, 5), 123.45);
 ```
 
-> TODO: Formulas
+To create a calculated cell, you can pass an instance of the `CellFormula` class.
+
+```cs
+builder.SetCell("C17", new CellFormula("SUM(A1:C16)");
+```
 
 ## Formatting Cells
 
-> TODO: styleId parameter
-> TODO: styles
+One of the more onerous tasks of building spreadsheets is creating and tracking cell formats.
+
+Spreadsheet builder simplifies things somewhat by defining a number of predefined cell formats via the `CellStyles` property. Overloads of `SetCell()` accept a style ID parameter.
+
+```cs
+builder.SetCell("A7", 123.45, builder.CellStyles[StandardCellStyle.Currency]);
+```
+
+*Note: If you pass a `decimal` type to `SetCell()`, or typecast the value to a `decimal`*, the library automatically uses the currency style when no style is specified.*
+
+If you need something other than one of the default cell formats, you can create your own as shown in the following example.
+
+```cs
+uint bold = builder.CellStyles.Register(new CellFormat()
+{
+    FontId = builder.FontStyles[StandardFontStyle.Bold],
+    ApplyFont = BooleanValue.FromBoolean(true),
+});
+
+uint header = builder.CellStyles.Register(new CellFormat()
+{
+    FontId = builder.FontStyles[StandardFontStyle.Header],
+    ApplyFont = BooleanValue.FromBoolean(true)
+});
+
+uint subheader = builder.CellStyles.Register(new CellFormat()
+{
+    FontId = builder.FontStyles[StandardFontStyle.Subheader],
+    ApplyFont = BooleanValue.FromBoolean(true)
+});
+
+uint headerRight = builder.CellStyles.Register(new CellFormat()
+{
+    FontId = builder.FontStyles[StandardFontStyle.Header],
+    ApplyFont = BooleanValue.FromBoolean(true),
+    Alignment = new() { Horizontal = HorizontalAlignmentValues.Right },
+    ApplyAlignment = BooleanValue.FromBoolean(true)
+});
+
+uint subheaderRight = builder.CellStyles.Register(new CellFormat()
+{
+    FontId = builder.FontStyles[StandardFontStyle.Subheader],
+    ApplyFont = BooleanValue.FromBoolean(true),
+    Alignment = new() { Horizontal = HorizontalAlignmentValues.Right },
+    ApplyAlignment = BooleanValue.FromBoolean(true)
+});
+
+builder.SetCell("D22", "Header", header);
+```
+
+In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also has `NumberFormats`, `FontStyles`, `FillStyles` and `BorderStyles` properties that provide standard styles and the ability to add news ones similar to the `CellStyles` property.
+
+*Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Ensure you don't create the same styles more than once for the same instance.*
 
 ## Tables
 
@@ -96,3 +151,6 @@ Once you've finished building the tabular data, you can create an Excel table an
 table.BuilderTable("MyTableName", ExcelTableStyle.MediumBlue6);
 ```
 
+## Saving
+
+Once you've created the Excel file, you can save it to disk by calling the `Save()` or `SaveAs()` method.
