@@ -113,7 +113,7 @@ uint subheaderRight = builder.CellStyles.Register(new CellFormat()
 builder.SetCell("D22", "Header", header);
 ```
 
-In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also has `NumberFormats`, `FontStyles`, `FillStyles` and `BorderStyles` properties that provide standard styles and the ability to add news ones similar to the `CellStyles` property.
+In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also has `NumberFormats`, `FontStyles`, `FillStyles` and `BorderStyles` properties that provide standard styles and the ability to add new ones similar to the `CellStyles` property.
 
 *Note: When you register a style, it is stored within the current instance of `SpreadsheetBuilder`. Ensure you don't create the same styles more than once for the same instance.*
 
