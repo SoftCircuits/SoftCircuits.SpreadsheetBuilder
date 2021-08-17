@@ -143,7 +143,7 @@ string[] columns = new string[]
 };
 
 TableBuilder table = new(builder, "A4", columns);
-table.AddRow("Abc", 123, 123.45);
+table.AddRow("Abc", 123, (decimal)123.45);
 table.AddRow("Def", 456, (decimal)4000);
 ```
 
