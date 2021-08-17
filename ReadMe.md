@@ -8,9 +8,11 @@ Install-Package SoftCircuits.SpreadsheetBuilder
 
 ## Overview
 
-SpreadsheetBuilder is a lightweight class that makes it easy to create Microsoft Excel spreadsheet files (XLSX) without Excel.
+SpreadsheetBuilder is a lightweight class that makes it easy to create Microsoft Excel spreadsheet (XLSX) files without Excel.
 
-The library gives up some features to keep things simple. The following example creates a new Excel spreadsheet file, sets a value at cell *A1*, and then saves the file.
+The library forgoes some features in order to keep things simple. But should be sufficient for most requirements for building an Excel spreadsheet.
+
+The following example creates a new Excel spreadsheet file, sets a value at cell *A1*, and then saves the file.
 
 ```cs
 using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
