@@ -121,9 +121,9 @@ In addition to the `CellStyles` property, the `SpreadsheetBuilder` class also ha
 
 You can create tabular data by setting the value of the appropriate cells, or you can use the `TableBuilder` class.
 
-The `TableBuilder` class, simplifies the process of creating tabular data, offers some performance gains, and can also be used to create and formatting a named Excel table.
+The `TableBuilder` class simplifies the process of creating tabular data, offers some performance gains, and can also be used to create and format a named Excel table.
 
-The constructor takes an instance of the `SpreadsheetBuilder` class, a cell reference to the cell at the top, left corner of the table, and either of:
+The `TableBuilder` constructor takes an instance of the `SpreadsheetBuilder` class, a cell reference to the cell at the top, left corner of the table, and either of:
 
 - The number of columns
 - An `IEnumerable<string>` of the column headers
