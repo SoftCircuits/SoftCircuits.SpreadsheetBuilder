@@ -37,6 +37,8 @@ The `SpreadsheetBuilder` class implements `IDisposable`, so you should use a `us
 using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
 ```
 
+Once you've constructed the document, you can save it to disk by calling the `Save()` or `SaveAs()` method.
+
 ## Setting Cell Values
 
 To set the value of a cell, use the `SetCell()` method.
@@ -155,6 +157,50 @@ Once you've finished building the tabular data, you can create an Excel table an
 table.BuilderTable("MyTableName", ExcelTableStyle.MediumBlue6);
 ```
 
-## Saving
+## Column Widths
 
-Once you've build the document, you can save it to disk by calling the `Save()` or `SaveAs()` method.
+Use the following method to set the width of a column.
+
+```cs
+public void SetColumnWidth(uint index, double width);
+
+`index` is the 1-based index of the column to set. `width` is the new column width measured as the number of characters of the maximum digit width of the numbers 0, 1, 2, ..., 9 as rendered in the normal style's font. There are 4 pixels of margin padding (two on each side), plus 1 pixel padding for the gridlines.
+
+Use the following method to set the width of a range of columns.
+
+```cs
+public void SetColumnWidth(uint startIndex, uint endIndex, double width)
+```
+
+## Worksheets
+
+When creating a new spreadsheet, the library will automatically create a worksheet called *Sheet1*.
+
+The `Worksheet` property is set to the active worksheet, if any. Set this property to change the active worksheet.
+
+In addition, the following methods are provided.
+
+```cs
+public Worksheet? GetFirstWorksheet()
+```
+
+This method returns the first worksheet, or null if there are no worksheets.
+
+```cs
+public Worksheet? GetWorksheet(string name)
+```
+
+This method returns the worksheet with the specified name.
+
+```cs
+public Worksheet CreateWorksheet(string name)
+```
+
+Creates a new worksheet and gives it the specified name.
+
+```cs
+public void RenameWorksheet(Worksheet worksheet, string name)
+```
+
+Renames the given worksheet with the specified name.
+
