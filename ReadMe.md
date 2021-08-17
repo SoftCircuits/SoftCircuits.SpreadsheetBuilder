@@ -71,7 +71,7 @@ Spreadsheet builder simplifies things somewhat by defining a number of predefine
 builder.SetCell("A7", 123.45, builder.CellStyles[StandardCellStyle.Currency]);
 ```
 
-*Note: If you pass a `decimal` type to `SetCell()`, or typecast the value to a `decimal`*, the library automatically uses the currency style when no style is specified.*
+*Note: If you pass a `decimal` type to `SetCell()`, or typecast the value to a `decimal`, the library automatically uses the currency style when no style is specified.*
 
 If you need something other than one of the default cell formats, you can create your own as shown in the following example.
 
