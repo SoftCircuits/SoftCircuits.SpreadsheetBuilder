@@ -145,8 +145,8 @@ string[] headers = new string[]
 };
 
 TableBuilder table = new(builder, "A4", headers);
-table.AddRow("Abc", 123, (decimal)123.45);
-table.AddRow("Def", 456, (decimal)4000);
+table.AddRow("Abc", 123, 123.45m);
+table.AddRow("Def", 456, )4000m);
 ```
 
 The `TableBuilder` class has a number of property for returning things like the range of the table so far.
