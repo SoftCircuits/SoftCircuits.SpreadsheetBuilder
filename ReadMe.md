@@ -145,6 +145,8 @@ table.AddRow(new CellValue<string>("Abc", 123, 123.45);
 table.AddRow(new CellValue<string>("Def", 456, (decimal)4000);
 ```
 
+The `TableBuilder` class has a number of property for returning things like the range of the table so far.
+
 Once you've finished building the tabular data, you can create an Excel table and style it.
 
 ```cs
