@@ -21,8 +21,8 @@ namespace SoftCircuits.Spreadsheet
         private const string DefaultSheetName = "Sheet1";
 
         /// <summary>
-        /// Sets whether the <see cref="Save"/> and <see cref="SaveAs(string)"/> methods throw an
-        /// exception if the current document does not validate.
+        /// Gets or sets whether the save methods throw an exception if the current
+        /// document does not validate.
         /// </summary>
         public static SaveValidationExceptions ValidationExceptions { get; set; } = SaveValidationExceptions.None;
 
@@ -130,9 +130,29 @@ namespace SoftCircuits.Spreadsheet
                 throw new Exception($"Validation in {methodName}() : {string.Join(", ", errors.Select(e => e.Description))}");
         }
 
-#endregion
+        #endregion
 
         #region Worksheets
+
+        public Worksheet? GetFirstWorksheet()
+        {
+            Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
+            Sheet? sheet = sheets?.Elements<Sheet>().FirstOrDefault();
+            if (sheet?.Id?.Value != null)
+                return ((WorksheetPart)WorkbookPart.GetPartById(sheet.Id!)).Worksheet;
+            return null;
+        }
+
+        public Worksheet? GetWorksheet(string name)
+        {
+            Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
+            Sheet? sheet = sheets?.Elements<Sheet>()
+                .Where(s => string.Compare(s.Name, name, true) == 0)
+                .FirstOrDefault();
+            if (sheet?.Id?.Value != null)
+                return ((WorksheetPart)WorkbookPart.GetPartById(sheet.Id!)).Worksheet;
+            return null;
+        }
 
         /// <summary>
         /// Creates a new worksheet
@@ -161,26 +181,6 @@ namespace SoftCircuits.Spreadsheet
             return worksheetPart.Worksheet;
         }
 
-        public Worksheet? GetFirstWorksheet()
-        {
-            Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
-            Sheet? sheet = sheets?.Elements<Sheet>().FirstOrDefault();
-            if (sheet?.Id?.Value != null)
-                return ((WorksheetPart)WorkbookPart.GetPartById(sheet.Id!)).Worksheet;
-            return null;
-        }
-
-        public Worksheet? GetWorksheet(string name)
-        {
-            Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
-            Sheet? sheet = sheets?.Elements<Sheet>()
-                .Where(s => string.Compare(s.Name, name, true) == 0)
-                .FirstOrDefault();
-            if (sheet?.Id?.Value != null)
-                return ((WorksheetPart)WorkbookPart.GetPartById(sheet.Id!)).Worksheet;
-            return null;
-        }
-
         public void RenameWorksheet(Worksheet worksheet, string name)
         {
             WorksheetPart? worksheetPart = worksheet?.WorksheetPart;
@@ -197,7 +197,7 @@ namespace SoftCircuits.Spreadsheet
             }
         }
 
-#endregion
+        #endregion
 
         #region Create and delete cells
 
@@ -357,7 +357,7 @@ namespace SoftCircuits.Spreadsheet
                 cell.Remove();
         }
 
-#endregion
+        #endregion
 
         #region Get cell values
 
@@ -462,7 +462,7 @@ namespace SoftCircuits.Spreadsheet
             return null;
         }
 
-#endregion
+        #endregion
 
         #region Set cell values
 
@@ -593,7 +593,7 @@ namespace SoftCircuits.Spreadsheet
             }
         }
 
-#endregion
+        #endregion
 
         #region Find cells
 
@@ -654,7 +654,7 @@ namespace SoftCircuits.Spreadsheet
             return null;
         }
 
-#endregion
+        #endregion
 
         #region Columns
 
@@ -699,7 +699,7 @@ namespace SoftCircuits.Spreadsheet
             }
         }
 
-#endregion
+        #endregion
 
         #region Tables
 
@@ -805,7 +805,7 @@ namespace SoftCircuits.Spreadsheet
             return table;
         }
 
-#endregion
+        #endregion
 
         #region Resources
 
@@ -830,7 +830,7 @@ namespace SoftCircuits.Spreadsheet
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string? GetSharedString(int id)
+        internal string? GetSharedString(int id)
         {
             // Create SharedStringTablePart if needed
             SharedStringTablePart shareStringPart = WorkbookPart.GetPartsOfType<SharedStringTablePart>()?.FirstOrDefault() ??
@@ -849,7 +849,7 @@ namespace SoftCircuits.Spreadsheet
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public int AddSharedString(string text)
+        internal int AddSharedString(string text)
         {
             // Create SharedStringTablePart if needed
             SharedStringTablePart shareStringPart = WorkbookPart.GetPartsOfType<SharedStringTablePart>()?.FirstOrDefault() ??
@@ -874,7 +874,7 @@ namespace SoftCircuits.Spreadsheet
             return i;
         }
 
-#endregion
+        #endregion
 
         #region IDispose
 
@@ -892,7 +892,7 @@ namespace SoftCircuits.Spreadsheet
             }
         }
 
-#endregion
+        #endregion
 
     }
 }

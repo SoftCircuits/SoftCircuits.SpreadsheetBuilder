@@ -37,15 +37,15 @@ namespace SoftCircuits
 
                 CellReference reference = new(1, 1);
 
-                builder.SetCell("A1", "US Rail & Logistics", styles.Header);
-                builder.SetCell("G1", "Invoice 1117-24257L", styles.HeaderRight);
-                builder.SetCell("A2", "Integrated Materials Inc.", styles.Subheader);
+                builder.SetCell("A1", "Company Name", styles.Header);
+                builder.SetCell("G1", "Invoice 1117", styles.HeaderRight);
+                builder.SetCell("A2", "Customer Name", styles.Subheader);
                 builder.SetCell("G2", "6/1/2021 - 6/30/2021", styles.SubheaderRight);
 
                 // Header table
                 TableBuilder table = new(builder, "A4", 2);
                 table.AddRow(new CellValue<string>("Total Cars:", styles.Bold), 16);
-                table.AddRow(new CellValue<string>("Total:", styles.Bold), (decimal)4000);
+                table.AddRow(new CellValue<string>("Total:", styles.Bold), 4000m);
                 table.BuildTable($"HeaderTable{i}", styles.HeaderTableStyle);
 
                 // Items table

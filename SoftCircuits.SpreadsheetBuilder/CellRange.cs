@@ -118,9 +118,10 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// 
+        /// Returns the range of the specified column within this range.
         /// </summary>
-        /// <param name="columnIndex">0-based column index.</param>
+        /// <param name="columnIndex">0-based column index relative to
+        /// the left column of this range.</param>
         /// <returns></returns>
         public CellRange GetColumnRange(uint columnIndex)
         {
@@ -131,9 +132,10 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// 
+        /// Returns the range of the specified row within this range.
         /// </summary>
-        /// <param name="rowIndex">0-based row index.</param>
+        /// <param name="rowIndex">0-based row index relative to the
+        /// top row of this range.</param>
         /// <returns></returns>
         public CellRange GetRowRange(uint rowIndex)
         {
@@ -191,10 +193,16 @@ namespace SoftCircuits.Spreadsheet
             set => End.RowIndex = Start.RowIndex + (uint)(value - 1);
         }
 
+        public override string ToString() => $"{Start}:{End}";
+
+        /// <summary>
+        /// Returns a string reference to this range.
+        /// </summary>
         public string Reference => ToString();
 
+        /// <summary>
+        /// Returns a shortened reference to this range.
+        /// </summary>
         public string ShortReference => $"{Start.ShortReference}:{End.ShortReference}";
-
-        public override string ToString() => $"{Start}:{End}";
     }
 }
