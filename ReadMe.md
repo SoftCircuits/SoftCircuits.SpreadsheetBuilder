@@ -157,4 +157,4 @@ table.BuilderTable("MyTableName", ExcelTableStyle.MediumBlue6);
 
 ## Saving
 
-Once you've created the Excel file, you can save it to disk by calling the `Save()` or `SaveAs()` method.
+Once you've build the document, you can save it to disk by calling the `Save()` or `SaveAs()` method.
