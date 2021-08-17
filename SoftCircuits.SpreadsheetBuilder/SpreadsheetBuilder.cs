@@ -93,7 +93,7 @@ namespace SoftCircuits.Spreadsheet
 #if DEBUG
             if (ValidationExceptions == SaveValidationExceptions.Always || ValidationExceptions == SaveValidationExceptions.DebugOnly)
 #else
-                if (ValidationExceptions == BuilderValidationExceptions.Always)
+                if (ValidationExceptions == SaveValidationExceptions.Always)
 #endif
                 ThrowExceptionOnValidationErrors(nameof(Save));
 
@@ -105,7 +105,7 @@ namespace SoftCircuits.Spreadsheet
 #if DEBUG
             if (ValidationExceptions == SaveValidationExceptions.Always || ValidationExceptions == SaveValidationExceptions.DebugOnly)
 #else
-            if (ValidationExceptions == BuilderValidationExceptions.Always)
+            if (ValidationExceptions == SaveValidationExceptions.Always)
 #endif
                 ThrowExceptionOnValidationErrors(nameof(Save));
 
