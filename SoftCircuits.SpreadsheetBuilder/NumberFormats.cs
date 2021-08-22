@@ -7,13 +7,19 @@ using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
 {
+    /// <summary>
+    /// Standard Excel numbering formats
+    /// </summary>
     public enum StandardNumberingFormat
     {
         General = 164,
         Float = 165,
         DateTime = 166
     }
-    
+
+    /// <summary>
+    /// Class to manage registered numbering formats.
+    /// </summary>
     public class NumberFormats : Dictionary<StandardNumberingFormat, uint>
     {
         // OpenXML reserves numbering formats 0 - 163.
@@ -21,7 +27,13 @@ namespace SoftCircuits.Spreadsheet
 
         private readonly SpreadsheetBuilder Builder;
 
-        public NumberFormats(SpreadsheetBuilder builder, bool registerStandardNumberingFormats)
+        /// <summary>
+        /// Constructs a new <see cref="NumberFormats"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="SpreadsheetBuilder"/>.</param>
+        /// <param name="registerStandardNumberingFormats">If true, the standard numbering formats
+        /// are automatically registered.</param>
+        public NumberFormats(SpreadsheetBuilder builder, bool registerStandardNumberingFormats = true)
         {
             Builder = builder;
 

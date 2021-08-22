@@ -10,7 +10,7 @@ namespace SoftCircuits
 
         static void Main(string[] args)
         {
-            SpreadsheetBuilder.ValidationExceptions = SaveValidationExceptions.DebugOnly;
+            SpreadsheetBuilder.ValidationExceptions = SaveValidation.DebugOnly;
 
             using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
             SpreadsheetStyles styles = new(builder);

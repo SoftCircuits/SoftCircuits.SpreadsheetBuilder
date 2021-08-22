@@ -199,6 +199,6 @@ namespace SoftCircuits.Spreadsheet
         /// builder.
         /// </summary>
         public void BuildTable(string name, ExcelTableStyle tableStyle) =>
-            Builder.CreateTable(name, GetTableRange(), Columns, Headers, tableStyle);
+            Builder.CreateTable(name, GetTableRange(), Headers, tableStyle);
     }
 }

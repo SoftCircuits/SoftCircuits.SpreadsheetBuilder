@@ -3,6 +3,9 @@
 //
 namespace SoftCircuits.Spreadsheet
 {
+    /// <summary>
+    /// Specifies one of the standard Excel table styles.
+    /// </summary>
     public struct ExcelTableStyle
     {
         public static readonly ExcelTableStyle Empty = new(null);

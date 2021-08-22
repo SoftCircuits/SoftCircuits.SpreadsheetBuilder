@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
 {
+    /// <summary>
+    /// Standard Excel font styles.
+    /// </summary>
     public enum StandardFontStyle
     {
         General,
@@ -16,11 +19,20 @@ namespace SoftCircuits.Spreadsheet
         Subheader,
     }
 
+    /// <summary>
+    /// Class to manage registered font styles.
+    /// </summary>
     public class FontStyles : Dictionary<StandardFontStyle, uint>
     {
         private readonly SpreadsheetBuilder Builder;
 
-        public FontStyles(SpreadsheetBuilder builder, bool registerStandardFontStyles)
+        /// <summary>
+        /// Constructs a new <see cref="FontStyles"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="SpreadsheetBuilder"/>.</param>
+        /// <param name="registerStandardFontStyles">If true, the standard font styles
+        /// are automatically registered.</param>
+        public FontStyles(SpreadsheetBuilder builder, bool registerStandardFontStyles = true)
         {
             Builder = builder;
 

@@ -8,17 +8,29 @@ using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
 {
+    /// <summary>
+    /// Standard Excel fill styles.
+    /// </summary>
     public enum StandardFillStyle
     {
         General,
         Gray125
     }
-    
+
+    /// <summary>
+    /// Class to manage registered fill styles.
+    /// </summary>
     public class FillStyles : Dictionary<StandardFillStyle, uint>
     {
         private readonly SpreadsheetBuilder Builder;
 
-        public FillStyles(SpreadsheetBuilder builder, bool registerStandardFillStyles)
+        /// <summary>
+        /// Constructs a new <see cref="FillStyles"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="SpreadsheetBuilder"/>.</param>
+        /// <param name="registerStandardFillStyles">If true, the standard fill styles
+        /// are automatically registered.</param>
+        public FillStyles(SpreadsheetBuilder builder, bool registerStandardFillStyles = true)
         {
             Builder = builder;
 

@@ -10,7 +10,7 @@
     <Company>SoftCircuits</Company>
     <Description>SpreadsheetBuilder is a lightweight class designed to build Microsoft Excel spreadsheet (XLSX) files without Excel. This library wraps the Open XML library. It avoids some of the more advanced features of Excel spreadsheets in favor of keeping it simple and making it easy to implement most features.</Description>
     <Copyright>Copyright © 2021 SoftCircuits</Copyright>
-    <PackageReleaseNotes>Corrected validation for knowFonts attribute; Minor fixes; Cleaned up code.</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved documentation; Simplified SpreadsheetBuilder.CreateTable() parameters; Minor tweaks.</PackageReleaseNotes>
     <PackageTags>microsoft excel spreadsheet builder</PackageTags>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -19,7 +19,7 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageIconUrl />
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

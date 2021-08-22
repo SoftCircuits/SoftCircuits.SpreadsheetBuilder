@@ -7,7 +7,7 @@ namespace SoftCircuits.Spreadsheet
     /// Specifies whether <see cref="SpreadsheetBuilder"/> throws an exception
     /// when saving a document that does not pass validation.
     /// </summary>
-    public enum SaveValidationExceptions
+    public enum SaveValidation
     {
         /// <summary>
         /// Never throw an exception when saving a document that does not pass

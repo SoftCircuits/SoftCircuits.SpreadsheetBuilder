@@ -23,17 +23,51 @@ namespace SoftCircuits.Spreadsheet
         /// Gets or sets whether the save methods (<see cref="Save"/> and <see cref="SaveAs(string)"/>)
         /// throw an exception if the current document does not validate.
         /// </summary>
-        public static SaveValidationExceptions ValidationExceptions { get; set; } = SaveValidationExceptions.None;
+        public static SaveValidation ValidationExceptions { get; set; } = SaveValidation.None;
 
+        #region Public properties
+
+        /// <summary>
+        /// Gets the current <see cref="SpreadsheetDocument"/>.
+        /// </summary>
         public SpreadsheetDocument Document { get; private set; }
+
+        /// <summary>
+        /// Gets the current document's <see cref="WorkbookPart"/>.
+        /// </summary>
         public WorkbookPart WorkbookPart { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the current document's active worksheet.
+        /// </summary>
         public Worksheet? Worksheet { get; set; }
 
+        /// <summary>
+        /// Gets the current document's collection of numbering formats.
+        /// </summary>
         public NumberFormats NumberFormats { get; private set; }
+
+        /// <summary>
+        /// Gets the current document's collection of font styles.
+        /// </summary>
         public FontStyles FontStyles { get; private set; }
+
+        /// <summary>
+        /// Gets the current document's collection of fill styles.
+        /// </summary>
         public FillStyles FillStyles { get; private set; }
+
+        /// <summary>
+        /// Gets the current document's collection of border styles.
+        /// </summary>
         public BorderStyles BorderStyles { get; private set; }
+
+        /// <summary>
+        /// Gets the current document's collection of cell styles.
+        /// </summary>
         public CellStyles CellStyles { get; private set; }
+
+        #endregion
 
         #region Construction
 
@@ -76,35 +110,42 @@ namespace SoftCircuits.Spreadsheet
 
             // When we create a stylesheet, Excel requires us to have certain
             // stylesheet elements defined, and in the correct order
-            NumberFormats = new(this, true);
-            FontStyles = new(this, true);
-            FillStyles = new(this, true);
-            BorderStyles = new(this, true);
-            CellStyles = new(this, true);
+            NumberFormats = new(this);
+            FontStyles = new(this);
+            FillStyles = new(this);
+            BorderStyles = new(this);
+            CellStyles = new(this);
         }
 
         #endregion
 
         #region Saving
 
+        /// <summary>
+        /// Saves the current document.
+        /// </summary>
         public void Save()
         {
 #if DEBUG
-            if (ValidationExceptions == SaveValidationExceptions.Always || ValidationExceptions == SaveValidationExceptions.DebugOnly)
+            if (ValidationExceptions == SaveValidation.Always || ValidationExceptions == SaveValidation.DebugOnly)
 #else
-            if (ValidationExceptions == SaveValidationExceptions.Always)
+            if (ValidationExceptions == SaveValidation.Always)
 #endif
                 ThrowExceptionOnValidationErrors(nameof(Save));
 
             Document.Save();
         }
 
+        /// <summary>
+        /// Saves the current document with the specified file name.
+        /// </summary>
+        /// <param name="path"></param>
         public void SaveAs(string path)
         {
 #if DEBUG
-            if (ValidationExceptions == SaveValidationExceptions.Always || ValidationExceptions == SaveValidationExceptions.DebugOnly)
+            if (ValidationExceptions == SaveValidation.Always || ValidationExceptions == SaveValidation.DebugOnly)
 #else
-            if (ValidationExceptions == SaveValidationExceptions.Always)
+            if (ValidationExceptions == SaveValidation.Always)
 #endif
                 ThrowExceptionOnValidationErrors(nameof(Save));
 
@@ -112,9 +153,8 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// Performs validation on the current document and returns any found
-        /// validation errors. Returns an empty <see cref="IEnumerable{T}"/>
-        /// if the current document is valid.
+        /// Performs validation on the current document and returns any validation errors.
+        /// Returns an empty <see cref="IEnumerable{T}"/> if the current document is valid.
         /// </summary>
         public IEnumerable<ValidationErrorInfo> GetValidationErrors()
         {
@@ -122,6 +162,11 @@ namespace SoftCircuits.Spreadsheet
             return validator.Validate(Document);
         }
 
+        /// <summary>
+        /// Performs validation on the current document and then throws an exception
+        /// if any validation errors were detected.
+        /// </summary>
+        /// <param name="methodName"></param>
         private void ThrowExceptionOnValidationErrors(string methodName)
         {
             var errors = GetValidationErrors();
@@ -133,6 +178,11 @@ namespace SoftCircuits.Spreadsheet
 
         #region Worksheets
 
+        /// <summary>
+        /// Returns the first worksheet in the workbook, or null if there are no
+        /// worksheets.
+        /// </summary>
+        /// <returns>The first worksheet in the workbook.</returns>
         public Worksheet? GetFirstWorksheet()
         {
             Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
@@ -142,6 +192,12 @@ namespace SoftCircuits.Spreadsheet
             return null;
         }
 
+        /// <summary>
+        /// Returns the worksheet with the specified name, or null if no worksheets
+        /// found with that name.
+        /// </summary>
+        /// <param name="name">The name of the worksheet to return.</param>
+        /// <returns>The matching worksheet.</returns>
         public Worksheet? GetWorksheet(string name)
         {
             Sheets? sheets = WorkbookPart.Workbook?.GetFirstChild<Sheets>();
@@ -154,11 +210,10 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// Creates a new worksheet
-        /// Given a WorkbookPart, inserts a new worksheet.
+        /// Creates a new worksheet with the specified name.
         /// </summary>
         /// <param name="name">Name for new worksheet.</param>
-        /// <returns></returns>
+        /// <returns>The newly created worksheet.</returns>
         public Worksheet CreateWorksheet(string name)
         {
             // Add a new worksheet part to the workbook
@@ -180,6 +235,11 @@ namespace SoftCircuits.Spreadsheet
             return worksheetPart.Worksheet;
         }
 
+        /// <summary>
+        /// Renames the specified worksheet.
+        /// </summary>
+        /// <param name="worksheet">The worksheet to be renamed.</param>
+        /// <param name="name">The new name to give the worksheet.</param>
         public void RenameWorksheet(Worksheet worksheet, string name)
         {
             WorksheetPart? worksheetPart = worksheet?.WorksheetPart;
@@ -201,17 +261,16 @@ namespace SoftCircuits.Spreadsheet
         #region Create and delete cells
 
         /// <summary>
-        /// Creates the specified cell, or returns the existing cell if it already
-        /// exists. Returns null if there is no sheet data.
+        /// Returns the specified cell, creating it if it does not already exist.
+        /// Returns null if there is no sheet data.
         /// </summary>
-        /// <param name="reference"></param>
+        /// <param name="reference">A reference that identifies the cell.</param>
         public Cell? CreateCell(string reference) => CreateCell(new CellReference(reference));
 
         /// <summary>
-        /// Creates the specified cell, or returns the existing cell if it already
-        /// exists. Returns null if there is no sheet data.
-        /// </summary>
-        /// <param name="reference"></param>
+        /// Returns the specified cell, creating it if it does not already exist.
+        /// Returns null if there is no sheet data.
+        /// <param name="reference">A reference that identifies the cell.</param>
         public Cell? CreateCell(CellReference reference)
         {
             Worksheet? worksheet = (reference.SheetName != null) ?
@@ -230,7 +289,7 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// Efficiently inserts a collection of contiguous cells info a row.
+        /// Efficiently inserts a collection of contiguous cells into a row. Used by <see cref="TableBuilder"/>.
         /// </summary>
         /// <param name="startReference">Cell reference of starting cell.</param>
         /// <param name="cells">Cells to insert.</param>
@@ -340,13 +399,13 @@ namespace SoftCircuits.Spreadsheet
         /// <summary>
         /// Deletes the specified cell.
         /// </summary>
-        /// <param name="reference"></param>
+        /// <param name="reference">A reference to the cell to delete.</param>
         public void DeleteCell(string reference) => DeleteCell(new CellReference(reference));
 
         /// <summary>
         /// Deletes the specified cell.
         /// </summary>
-        /// <param name="reference"></param>
+        /// <param name="reference">A reference to the cell to delete.</param>
         public void DeleteCell(CellReference reference)
         {
             Debug.Assert(reference != null);
@@ -597,15 +656,15 @@ namespace SoftCircuits.Spreadsheet
         #region Find cells
 
         /// <summary>
-        /// Returns the specified cell, or null if the cell wasn't found.
+        /// Returns the specified cell, or null if the cell doesn't exist.
         /// </summary>
-        /// <param name="reference">Cell reference.</param>
+        /// <param name="reference">A reference to the cell to find.</param>
         public Cell? FindCell(string reference) => FindCell(new CellReference(reference));
 
         /// <summary>
-        /// Returns the specified cell, or null if the cell wasn't found.
+        /// Returns the specified cell, or null if the cell doesn't exist.
         /// </summary>
-        /// <param name="reference">Cell reference.</param>
+        /// <param name="reference">A reference to the cell to find.</param>
         public Cell? FindCell(CellReference reference)
         {
             Worksheet? worksheet = (reference.SheetName != null) ?
@@ -623,7 +682,7 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// Returns the cell with the specified number, or null if the cell wasn't found.
+        /// Returns the cell with the specified name, or null if the cell wasn't found.
         /// </summary>
         /// <param name="name">Name of the cell to find.</param>
         public Cell? FindCellByName(string name)
@@ -662,20 +721,18 @@ namespace SoftCircuits.Spreadsheet
         /// </summary>
         /// <param name="index">1-based index of column to set.</param>
         /// <param name="width">Column width measured as the number of characters of the maximum
-        /// digit width of the numbers 0, 1, 2, …, 9 as rendered in the normal style's font.
-        /// There are 4 pixels of margin padding (two on each side), plus 1 pixel padding for
-        /// the gridlines.</param>
+        /// digit width as rendered in the normal style's font. There are 4 pixels of margin padding
+        /// (two on each side), plus 1 pixel padding for the gridlines.</param>
         public void SetColumnWidth(uint index, double width) => SetColumnWidth(index, index, width);
 
         /// <summary>
-        /// Sets column widths for the active worksheet.
+        /// Sets a range of column widths for the active worksheet.
         /// </summary>
         /// <param name="startIndex">1-based index of starting column to set.</param>
         /// <param name="endIndex">1-based index of ending column to set.</param>
         /// <param name="width">Column width measured as the number of characters of the maximum
-        /// digit width of the numbers 0, 1, 2, …, 9 as rendered in the normal style's font.
-        /// There are 4 pixels of margin padding (two on each side), plus 1 pixel padding for
-        /// the gridlines.</param>
+        /// digit width as rendered in the normal style's font. There are 4 pixels of margin padding
+        /// (two on each side), plus 1 pixel padding for the gridlines.</param>
         /// <remarks>
         /// https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.spreadsheet.column?view=openxml-2.8.1
         /// </remarks>
@@ -702,6 +759,11 @@ namespace SoftCircuits.Spreadsheet
 
         #region Tables
 
+        /// <summary>
+        /// Returns the table with the specified name, or null of there are no matching tables.
+        /// </summary>
+        /// <param name="name">The name of the table to find.</param>
+        /// <returns>The table with the specified name.</returns>
         public Table? GetTableByName(string name)
         {
             IEnumerable<TableDefinitionPart>? tableDefinitionParts = Worksheet?.WorksheetPart?.TableDefinitionParts;
@@ -717,7 +779,15 @@ namespace SoftCircuits.Spreadsheet
             return null;
         }
 
-        public Table? CreateTable(string name, CellRange range, int columns, IEnumerable<string>? headers, ExcelTableStyle tableStyle)
+        /// <summary>
+        /// Creates an Excel table.
+        /// </summary>
+        /// <param name="name">The name to give the new table.</param>
+        /// <param name="range">The cell range of the new table.</param>
+        /// <param name="headers">Table headers, if table has header.</param>
+        /// <param name="tableStyle">Optional table style.</param>
+        /// <returns>Returns the created table.</returns>
+        public Table? CreateTable(string name, CellRange range, IEnumerable<string>? headers = null, ExcelTableStyle? tableStyle = null)
         {
             // Get target worksheet
             Worksheet? worksheet = (range.Start.SheetName != null) ?
@@ -728,11 +798,6 @@ namespace SoftCircuits.Spreadsheet
             WorksheetPart? worksheetPart = worksheet?.WorksheetPart;
             if (worksheetPart == null)
                 return null;
-
-            // Copy range and force width to match number of columns
-            range = new(range);
-            if (range.ColumnCount != columns)
-                range.ColumnCount = columns;
 
             // Create table definition part
             TableDefinitionPart tableDefinitionPart = worksheetPart.AddNewPart<TableDefinitionPart>();
@@ -763,7 +828,7 @@ namespace SoftCircuits.Spreadsheet
             }
             else
             {
-                tableColumns.Append(Enumerable.Range(1, columns).Select(n => new TableColumn()
+                tableColumns.Append(Enumerable.Range(1, range.ColumnCount).Select(n => new TableColumn()
                 {
                     Id = (uint)n,
                     Name = $"Column{n}"
@@ -777,14 +842,15 @@ namespace SoftCircuits.Spreadsheet
             //table.Append(autoFilter);
 
             // Add table style info
-            if (!tableStyle.IsEmpty)
+            if (tableStyle != null && !tableStyle.Value.IsEmpty)
             {
+                ExcelTableStyle style = tableStyle.Value;
                 table.Append(new TableStyleInfo()
                 {
-                    Name = tableStyle.Value,
-                    ShowFirstColumn = tableStyle.ShowFirstColumn,
-                    ShowLastColumn = tableStyle.ShowLastColumn,
-                    ShowRowStripes = tableStyle.ShowRowStripes,
+                    Name = style.Value,
+                    ShowFirstColumn = style.ShowFirstColumn,
+                    ShowLastColumn = style.ShowLastColumn,
+                    ShowRowStripes = style.ShowRowStripes,
                 });
             }
 
@@ -825,29 +891,11 @@ namespace SoftCircuits.Spreadsheet
         }
 
         /// <summary>
-        /// Returns the shared string with the given ID, or <c>null</c> if the ID is not valid.
+        /// Adds a shared string resource and returns the index of the shared string. If an entry already
+        /// exists for the given text, the index of the existing resource is returned.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        internal string? GetSharedString(int id)
-        {
-            // Create SharedStringTablePart if needed
-            SharedStringTablePart shareStringPart = WorkbookPart.GetPartsOfType<SharedStringTablePart>()?.FirstOrDefault() ??
-                WorkbookPart.AddNewPart<SharedStringTablePart>();
-
-            // Create SharedStringTable if needed
-            if (shareStringPart.SharedStringTable != null && shareStringPart.SharedStringTable.Count() > id)
-                return shareStringPart.SharedStringTable.ElementAt(id).InnerText;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text
-        /// and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The string text to add.</param>
+        /// <returns>The index of the shared string.</returns>
         internal int AddSharedString(string text)
         {
             // Create SharedStringTablePart if needed
@@ -859,18 +907,37 @@ namespace SoftCircuits.Spreadsheet
                 shareStringPart.SharedStringTable = new();
 
             // Return index of matching text
-            int i = 0;
+            int index = 0;
             foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>())
             {
                 if (item.InnerText == text)
-                    return i;
-                i++;
+                    return index;
+                index++;
             }
 
             // The text does not exist in the part. Create the SharedStringItem and return its index
             shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new Text(text)));
 
-            return i;
+            return index;
+        }
+
+        /// <summary>
+        /// Returns the shared string resource with the specified index, or <c>null</c> if the index is
+        /// not valid.
+        /// </summary>
+        /// <param name="index">The index of the shared string to return.</param>
+        /// <returns>The shared string resource with the specified index.</returns>
+        internal string? GetSharedString(int index)
+        {
+            // Create SharedStringTablePart if needed
+            SharedStringTablePart shareStringPart = WorkbookPart.GetPartsOfType<SharedStringTablePart>()?.FirstOrDefault() ??
+                WorkbookPart.AddNewPart<SharedStringTablePart>();
+
+            // Create SharedStringTable if needed
+            if (shareStringPart.SharedStringTable != null && shareStringPart.SharedStringTable.Count() > index)
+                return shareStringPart.SharedStringTable.ElementAt(index).InnerText;
+
+            return null;
         }
 
         #endregion

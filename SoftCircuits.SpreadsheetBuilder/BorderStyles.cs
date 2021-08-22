@@ -8,7 +8,7 @@ using System.Linq;
 namespace SoftCircuits.Spreadsheet
 {
     /// <summary>
-    /// Standard border styles.
+    /// Standard Excel border styles.
     /// </summary>
     public enum StandardBorderStyle
     {
@@ -16,13 +16,19 @@ namespace SoftCircuits.Spreadsheet
     }
 
     /// <summary>
-    /// Dictionary to hold 
+    /// Class to manage registered border styles.
     /// </summary>
     public class BorderStyles : Dictionary<StandardBorderStyle, uint>
     {
         private readonly SpreadsheetBuilder Builder;
 
-        public BorderStyles(SpreadsheetBuilder builder, bool registerStandardBorderStyles)
+        /// <summary>
+        /// Constructs a new <see cref="BorderStyles"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="SpreadsheetBuilder"/>.</param>
+        /// <param name="registerStandardBorderStyles">If true, the standard border styles
+        /// are automatically registered.</param>
+        public BorderStyles(SpreadsheetBuilder builder, bool registerStandardBorderStyles = true)
         {
             Builder = builder;
 

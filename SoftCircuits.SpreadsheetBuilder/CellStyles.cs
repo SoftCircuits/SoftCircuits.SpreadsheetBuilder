@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
 {
+    /// <summary>
+    /// Standard Excel cell styles.
+    /// </summary>
     public enum StandardCellStyle
     {
         General,
@@ -19,11 +22,20 @@ namespace SoftCircuits.Spreadsheet
         Time
     }
 
+    /// <summary>
+    /// Class to manage registered cell styles.
+    /// </summary>
     public class CellStyles : Dictionary<StandardCellStyle, uint>
     {
         private readonly SpreadsheetBuilder Builder;
 
-        public CellStyles(SpreadsheetBuilder builder, bool registerStandardStyles)
+        /// <summary>
+        /// Constructs a new <see cref="CellStyles"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="SpreadsheetBuilder"/>.</param>
+        /// <param name="registerStandardStyles">If true, the standard cell styles are
+        /// automatically registered.</param>
+        public CellStyles(SpreadsheetBuilder builder, bool registerStandardStyles = true)
         {
             Builder = builder;
 
