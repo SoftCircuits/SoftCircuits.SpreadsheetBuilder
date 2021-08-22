@@ -72,7 +72,7 @@ namespace SoftCircuits.Spreadsheet
         public uint Register(Font font)
         {
             Stylesheet stylesheet = Builder.GetStylesheet();
-            Fonts fonts = stylesheet.Fonts ?? stylesheet.AppendChild(new Fonts() { KnownFonts = BooleanValue.FromBoolean(true) });
+            Fonts fonts = stylesheet.Fonts ?? stylesheet.AppendChild(new Fonts());
             fonts.Append(font);
             fonts.Count = (uint)fonts.Count();
             return fonts.Count - 1;

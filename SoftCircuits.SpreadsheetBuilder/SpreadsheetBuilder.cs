@@ -12,7 +12,6 @@ using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
 {
-
     /// <summary>
     /// Main Excel spreadsheet builder class.
     /// </summary>
@@ -21,8 +20,8 @@ namespace SoftCircuits.Spreadsheet
         private const string DefaultSheetName = "Sheet1";
 
         /// <summary>
-        /// Gets or sets whether the save methods throw an exception if the current
-        /// document does not validate.
+        /// Gets or sets whether the save methods (<see cref="Save"/> and <see cref="SaveAs(string)"/>)
+        /// throw an exception if the current document does not validate.
         /// </summary>
         public static SaveValidationExceptions ValidationExceptions { get; set; } = SaveValidationExceptions.None;
 
@@ -93,7 +92,7 @@ namespace SoftCircuits.Spreadsheet
 #if DEBUG
             if (ValidationExceptions == SaveValidationExceptions.Always || ValidationExceptions == SaveValidationExceptions.DebugOnly)
 #else
-                if (ValidationExceptions == SaveValidationExceptions.Always)
+            if (ValidationExceptions == SaveValidationExceptions.Always)
 #endif
                 ThrowExceptionOnValidationErrors(nameof(Save));
 
@@ -127,7 +126,7 @@ namespace SoftCircuits.Spreadsheet
         {
             var errors = GetValidationErrors();
             if (errors.Any())
-                throw new Exception($"Validation in {methodName}() : {string.Join(", ", errors.Select(e => e.Description))}");
+                throw new Exception($"Validation failed in {methodName}() : {string.Join(", ", errors.Select(e => e.Description))}");
         }
 
         #endregion

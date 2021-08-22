@@ -7,7 +7,7 @@ namespace SoftCircuits
     /// <summary>
     /// Class to track application standard styles.
     /// </summary>
-    public class RailtraxStyles
+    public class SpreadsheetStyles
     {
         public uint General { get; private set; }
         public uint Integer { get; private set; }
@@ -25,7 +25,7 @@ namespace SoftCircuits
         public ExcelTableStyle HeaderTableStyle { get; private set; }
         public ExcelTableStyle ItemsTableStyle { get; private set; }
 
-        public RailtraxStyles(SpreadsheetBuilder builder)
+        public SpreadsheetStyles(SpreadsheetBuilder builder)
         {
             General = builder.CellStyles[StandardCellStyle.General];
             Integer = builder.CellStyles[StandardCellStyle.Integer];

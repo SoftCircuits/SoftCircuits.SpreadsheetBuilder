@@ -10,10 +10,10 @@ namespace SoftCircuits
 
         static void Main(string[] args)
         {
-            SpreadsheetBuilder.ValidationExceptions = SaveValidationExceptions.None;
+            SpreadsheetBuilder.ValidationExceptions = SaveValidationExceptions.DebugOnly;
 
             using SpreadsheetBuilder builder = SpreadsheetBuilder.Create(Filename);
-            RailtraxStyles styles = new(builder);
+            SpreadsheetStyles styles = new(builder);
 
             // Table columns
             string[] bodyHeaders = new string[]
