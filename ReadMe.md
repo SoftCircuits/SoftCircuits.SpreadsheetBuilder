@@ -75,7 +75,7 @@ Spreadsheet builder simplifies things somewhat by defining a number of predefine
 builder.SetCell("A7", 123.45, builder.CellStyles[StandardCellStyle.Currency]);
 ```
 
-*Note: If you pass a `decimal` type to `SetCell()`, or typecast the value to a `decimal`, the library automatically uses the currency style when no style is specified.*
+*Note: If you pass a `decimal` type to `SetCell()`, the library automatically uses the currency style when no style ID is specified.*
 
 If you need something other than one of the default cell formats, you can create your own as shown in the following example.
 
@@ -146,10 +146,10 @@ string[] headers = new string[]
 
 TableBuilder table = new(builder, "A4", headers);
 table.AddRow("Abc", 123, 123.45m);
-table.AddRow("Def", 456, )4000m);
+table.AddRow("Def", 456, 4000m);
 ```
 
-The `TableBuilder` class has a number of property for returning things like the range of the table so far.
+The `TableBuilder` class has many properties for returning things like the range of the table built so far.
 
 Once you've finished building the tabular data, you can create an Excel table and style it.
 
@@ -175,7 +175,7 @@ public void SetColumnWidth(uint startIndex, uint endIndex, double width)
 
 ## Worksheets
 
-When creating a new spreadsheet, the library will automatically create a worksheet called *Sheet1*.
+When creating a new spreadsheet document, the library automatically created a worksheet called *Sheet1*.
 
 The `Worksheet` property is set to the active worksheet, if any. Set this property to change the active worksheet.
 
