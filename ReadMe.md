@@ -154,7 +154,7 @@ The `TableBuilder` class has many properties for returning things like the range
 Once you've finished building the tabular data, you can create an Excel table and style it.
 
 ```cs
-table.BuilderTable("MyTableName", ExcelTableStyle.MediumBlue6);
+table.BuildTable("MyTableName", ExcelTableStyle.MediumBlue6);
 ```
 
 ## Column Widths
