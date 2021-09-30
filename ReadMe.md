@@ -175,7 +175,7 @@ public void SetColumnWidth(uint startIndex, uint endIndex, double width)
 
 ## Worksheets
 
-When creating a new spreadsheet document, the library automatically created a worksheet called *Sheet1*.
+When creating a new spreadsheet document, the library automatically creates a worksheet called *Sheet1*.
 
 The `Worksheet` property is set to the active worksheet, if any. Set this property to change the active worksheet.
 
