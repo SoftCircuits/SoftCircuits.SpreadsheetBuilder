@@ -73,6 +73,9 @@ namespace SoftCircuits.Spreadsheet
 
         public static SpreadsheetBuilder Create(string path, SpreadsheetDocumentType type = SpreadsheetDocumentType.Workbook) =>
             new(SpreadsheetDocument.Create(path, type), true);
+            
+        public static SpreadsheetBuilder Create(System.IO.Stream stream, SpreadsheetDocumentType type = SpreadsheetDocumentType.Workbook) =>
+            new(SpreadsheetDocument.Create(stream, type), true);
 
         public static SpreadsheetBuilder CreateFromTemplate(string path) =>
             new(SpreadsheetDocument.CreateFromTemplate(path), false);
