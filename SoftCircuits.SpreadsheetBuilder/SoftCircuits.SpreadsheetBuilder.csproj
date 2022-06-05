@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
-    <Nullable>annotations</Nullable>
-    <Nullable Condition="'$(TargetFramework)' == 'net5.0'">enable</Nullable>
+    <TargetFrameworks>net6.0;net5.0;netstandard2.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' == 'netstandard2.0'">annotations</Nullable>
     <LangVersion>9.0</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
     <Description>SpreadsheetBuilder is a lightweight class designed to build Microsoft Excel spreadsheet (XLSX) files without Excel. This library wraps the Open XML library. It avoids some of the more advanced features of Excel spreadsheets in favor of keeping it simple and making it easy to implement most features.</Description>
-    <Copyright>Copyright © 2021 SoftCircuits</Copyright>
-    <PackageReleaseNotes>Improved documentation; Simplified SpreadsheetBuilder.CreateTable() parameters; Minor tweaks.</PackageReleaseNotes>
+    <Copyright>Copyright © 2022 SoftCircuits</Copyright>
+    <PackageReleaseNotes>Added SpreadsheetBuilder.Create() overload that accepts a stream; Added direct support for .NET 6.0; Minor tweaks.</PackageReleaseNotes>
     <PackageTags>microsoft excel spreadsheet builder</PackageTags>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -19,7 +19,8 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageIcon>Logo_64x64.png</PackageIcon>
     <PackageIconUrl />
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +35,10 @@
     <None Include="..\Logo_64x64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 

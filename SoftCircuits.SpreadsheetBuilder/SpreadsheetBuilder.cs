@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 using DocumentFormat.OpenXml;
@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Validation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace SoftCircuits.Spreadsheet
@@ -74,7 +75,7 @@ namespace SoftCircuits.Spreadsheet
         public static SpreadsheetBuilder Create(string path, SpreadsheetDocumentType type = SpreadsheetDocumentType.Workbook) =>
             new(SpreadsheetDocument.Create(path, type), true);
             
-        public static SpreadsheetBuilder Create(System.IO.Stream stream, SpreadsheetDocumentType type = SpreadsheetDocumentType.Workbook) =>
+        public static SpreadsheetBuilder Create(Stream stream, SpreadsheetDocumentType type = SpreadsheetDocumentType.Workbook) =>
             new(SpreadsheetDocument.Create(stream, type), true);
 
         public static SpreadsheetBuilder CreateFromTemplate(string path) =>
